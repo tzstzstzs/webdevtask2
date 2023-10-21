@@ -12,8 +12,8 @@ $successMessage = 'Success Message';
 
 // Process the form data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $enteredUsername = $_POST["username"];  // Corrected the array key
-    $enteredPassword = $_POST["password"];  // Corrected the array key
+    $enteredUsername = $_POST["username"];
+    $enteredPassword = $_POST["password"];
 
     $isValidUser = false;
     $correctPassword = false;
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (!$isValidUser) {
-        $errorMessage = "No such user.";
+        $errorMessage = "Nincs ilyen felhasználó.";
         header("Location: login.php?error=" . urlencode($errorMessage));
         exit;
     } elseif (!$correctPassword) {
