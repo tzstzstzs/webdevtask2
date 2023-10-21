@@ -1,10 +1,37 @@
 <?php
+function decrypt($encryptedText) {
+    $keys = [5, -14, 31, -9, 3];
+    $decryptedText = '';
+    $keyCounter = 0;
+
+    for ($i = 0; $i < strlen($encryptedText); $i++) {
+        $char = $encryptedText[$i];
+
+        if ($char == "\n") {
+            $decryptedText .= $char;
+            $keyCounter = 0; // Reset the key counter for a new line
+            continue;
+        }
+
+        $charValue = ord($char);
+        $charValue -= $keys[$keyCounter];
+        $decryptedText .= chr($charValue);
+
+        $keyCounter = ($keyCounter + 1) % count($keys); // Move to the next key and wrap around if needed.
+    }
+
+    return $decryptedText;
+}
+
 
 // Include the config file for database connection
 require '../config.php';
 
-// Read the passwords from the password.txt file
-$passwords = file('../password.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+// Read the encrypted passwords from the password.txt file
+$encryptedPasswords = file_get_contents('../password.txt');
+$decryptedPasswords = decrypt($encryptedPasswords);
+$passwords = explode("\n", $decryptedPasswords);
+
 
 // Variables for storing messages
 $errorMessage = 'Error Message';
